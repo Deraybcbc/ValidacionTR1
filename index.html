@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Validacion</title>
+    </head>
+    <body>
+        <div id="app">
+            <h1>MI VALIDACION</h1>
+            <div class="paginaInicial">
+                <div v-if="divActivo=='paginaDeInicio'">
+
+                    <button class="btn btn-primary" id="btnIrTienda"
+                        @click="cambiarPantalla('formulario')">Formulario</button>
+                    <button class="btn btn-secondary" id="btnInfoData"
+                        @click="cambiarPantalla('datosUser')">Mis
+                        datos</button>
+                    <button class="btn btn-secondary"
+                        id="btnPelis"
+                        @click="fetchPeliculas('peliculas','cars')">Pelis</button>
+                </div>
+            </div>
+
+            <div class="Tienda">
+                <div v-if="divActivo == 'formulario'">
+                    <h1>FORMULARIO</h1>
+                    <form
+                        @submit.prevent="introducirDatosJson('paginaDeInicio')">
+                        <div class="inputName">
+                            <span>Nom </span>
+                            <input type="text" placeholder="nom"
+                                v-model="dataJSON.data.name">
+                        </div>
+
+                        <div class="inputApellido">
+                            <span>Apellido </span>
+                            <input type="text" placeholder="Apellido"
+                                v-model="dataJSON.data.apellido">
+                        </div>
+
+                        <div class="inputEdad">
+                            <span>Edad </span>
+                            <input type="number" placeholder="Edad"
+                                v-model="dataJSON.data.edad">
+                        </div>
+
+                        <button class="btn btn-secondary" type="submit">
+                            Enviar
+                        </button>
+                    </form>
+                    <button class="btn btn-primary" id="btnVolverHome"
+                        @click="cambiarPantalla('paginaDeInicio')">Home</button>
+
+                </div>
+
+            </div>
+
+            <div class="InfoUser">
+                <div v-if="divActivo == 'datosUser'">
+                    <h1>Usuari</h1>
+                    <div class="info">
+                        <table>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Apellido</th>
+                                <th>Edad</th>
+                            </tr>
+                            <tr>
+                                <th>{{dataJSON.data.name}}</th>
+                                <th>{{dataJSON.data.apellido}}</th>
+                                <th>{{dataJSON.data.edad}}</th>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <button class="btn btn-primary" id="goHome"
+                        @click="cambiarPantalla('paginaDeInicio')">Home</button>
+                </div>
+            </div>
+
+            <div class="pelisFetch">
+                <div v-if="divActivo == 'peliculas'">
+
+                    <div v-if="loading" class="loading-screen">
+                        <img
+                            src="https://codigofuente.io/wp-content/uploads/2018/09/progress.gif"
+                            alt>
+                    </div>
+
+                    <div v-if="!loading">
+                        <h1>Peliculas</h1>
+                        <button class="btn btn-secondary"
+                            @click="cambiarPantalla('paginaDeInicio')">Home</button>
+                        <div v-for="(pelis, index) in peliculas.value"
+                            :key="index">
+                            <img :src="pelis.Poster" :alt="pelis.Title">
+                            <p><b>Titulo: </b> {{pelis.Title}}</p>
+                            <p><b>Year: </b> {{pelis.Year}}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script type="module" src="./utils.js"></script>
+
+    </body>
+</html>
+
+<style scoped>
+    .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+    }
+
+</style>
